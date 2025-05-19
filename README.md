@@ -55,10 +55,10 @@ TrackIt aims to replicate a robust Warehouse Management System (WMS) that suppor
 ## 🧰 Tech Stack
 
 - **Framework:** Next.js 14 (App Router)
-- **Styling:** TailwindCSS
-- **Auth & DB:** Supabase / Firebase
+- **Styling:** TailwindCSS Typescript
+- **Auth & DB:** Supabase 
 - **Offline Storage:** Dexie.js (IndexedDB)
-- **Realtime:** Supabase Realtime or Firebase
+- **Realtime:** Supabase Realtime 
 - **Barcode Scanner:** WebRTC API
 - **Form Handling:** React Hook Form + Zod
 - **PWA Support:** Service Workers + Manifest
@@ -94,7 +94,25 @@ cd trackit
    l# or
    yarn install
 
-3. Set up environment variables
+ ## 🔧 Supabase Setup ##
+1. Create a Supabase Project
+Go to https://supabase.com
+
+2. Configure .env.local
+   ```bash
+   cp .env.example .env.local
+
+Edit .env.local with your credentials:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-api-key
+```
+3. Set Up Database Tables
+Create a new project
+
+Note your project URL and anon/public API key
+
+4. Set up environment variables
 ```bash
 cp .env.example .env.local
 ```
@@ -103,20 +121,44 @@ Edit .env.local:
 NEXT_PUBLIC_SUPABASE_URL=your-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
-4. Run locally
+ ## Set Up Database Tables ##
+In the Supabase SQL Editor, run the SQL scripts to create required tables. For example:
+```SQL
+-- Inventory table
+create table if not exists inventory (
+  id uuid primary key default uuid_generate_v4(),
+  name text not null,
+  quantity integer not null,
+  location text,
+  threshold integer,
+  created_at timestamp default now(),
+  updated_at timestamp default now()
+);
+
+-- Activity log
+create table if not exists activity_logs (
+  id uuid primary key default uuid_generate_v4(),
+  action text,
+  item_id uuid references inventory(id),
+  user_email text,
+  timestamp timestamp default now()
+);
+```
+
+## ▶️ Run Locally ##
    ```bash
    npm run dev
 
 Visit: http://localhost:3000
 
-📦 Build & Deploy
+📦 Build & Deploy 
 ```bash
 npm run build
 npm start
 ```
 You can deploy to Vercel, Netlify, Firebase Hosting, or any HTTPS-enabled static server.
 
-🧱 Future Improvements
+## 🧱 Future Improvements ##
 Role-based access (admin/staff)
 
 Admin dashboard
@@ -129,7 +171,7 @@ QR code generation for products
 
 
 
-💼 Use Cases
+## 💼 Use Cases ##
 Logistics and warehouse inventory
 
 E-commerce backend tooling
@@ -139,10 +181,10 @@ Full-stack developer portfolio piece
 Offline apps for resource-constrained areas
 
 
-📄 License
+## 📄 License ##
 Licensed under the MIT License.
 
-🤝 Contributing
+## 🤝 Contributing ##
 Contributions are welcome!
 
 Fork this repo
@@ -155,7 +197,7 @@ Push to your branch: git push origin new-feature
 
 Submit a Pull Request
 
-📬 Feedback
+## 📬 Feedback ##
 Open an issue or reach out on GitHub Issues for bugs, ideas, or suggestions.
 
 Built to demonstrate real-world problem-solving with modern web tools — TrackIt is more than a template. It’s a production-grade demo.
@@ -168,7 +210,7 @@ Edit
 
 Let me know if you’d like badges, deployment instructions for Vercel/Netlify, or if you're using Firebase instead of Supabase so I can tweak it accordingly.
 ```
-Author 
+# Author # 
 ```
 @victortterry25
 
